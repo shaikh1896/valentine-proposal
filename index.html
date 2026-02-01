@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Will You Be My Valentine?</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Dancing+Script:wght@500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap');
         
         * {
             margin: 0;
@@ -20,14 +20,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            overflow-x: hidden;
         }
 
         .container {
-            position: relative;
             width: 100%;
             max-width: 500px;
             padding: 20px;
+            z-index: 10;
         }
 
         .card {
@@ -36,9 +36,10 @@
             padding: 50px 40px;
             box-shadow: 0 20px 60px rgba(255, 105, 180, 0.2);
             text-align: center;
-            position: relative;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.5);
+            position: relative;
+            overflow: visible;
         }
 
         .bear-container {
@@ -147,40 +148,38 @@
             font-weight: 600;
             cursor: pointer;
             font-family: 'Inter', sans-serif;
-            position: absolute;
-            transition: transform 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         .yes-btn {
             background: #ff4d8d;
             color: white;
-            left: 20%;
-            transform: translateX(-50%);
             box-shadow: 0 4px 15px rgba(255, 77, 141, 0.4);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .yes-btn:hover {
             background: #ff3377;
-            transform: translateX(-50%) scale(1.05);
+            transform: scale(1.05);
             box-shadow: 0 6px 20px rgba(255, 77, 141, 0.6);
         }
 
         .no-btn {
             background: #f0f0f0;
             color: #666;
-            right: 20%;
-            transform: translateX(50%);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         .no-btn:hover {
             background: #e0e0e0;
         }
 
-        /* Class added when button starts moving */
-        .no-btn.moving {
+        .no-btn.escaping {
             position: fixed;
+            z-index: 9999;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            pointer-events: auto;
         }
 
         .hint {
@@ -198,13 +197,14 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255, 255, 255, 0.95);
+            background: linear-gradient(135deg, #fff5f8 0%, #ffe4ed 100%);
             z-index: 1000;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 30px 20px;
             overflow-y: auto;
+            text-align: center;
         }
 
         .celebration.active {
@@ -212,27 +212,29 @@
         }
 
         .yay-text {
-            font-size: 48px;
+            font-size: 56px;
             font-weight: 700;
             color: #ff4d8d;
             margin-bottom: 20px;
             animation: bounce 1s ease infinite;
+            text-shadow: 2px 2px 10px rgba(255, 77, 141, 0.3);
         }
 
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+            50% { transform: translateY(-15px); }
         }
 
         .gif-container {
-            max-width: 500px;
-            width: 90%;
+            max-width: 450px;
+            width: 85%;
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
             transform: scale(0);
-            animation: popIn 0.5s ease forwards 0.3s;
-            background: #000;
+            animation: popIn 0.6s ease forwards 0.2s;
+            border: 4px solid white;
+            margin-bottom: 25px;
         }
 
         .gif-container img {
@@ -245,12 +247,71 @@
             to { transform: scale(1); }
         }
 
+        .quote-container {
+            max-width: 600px;
+            width: 90%;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 0.8s;
+            margin-top: 10px;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .quote-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 32px;
+            color: #c2185b;
+            line-height: 1.6;
+            text-align: center;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .quote-author {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            color: #888;
+            margin-top: 20px;
+            font-style: italic;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        .quote-divider {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ff4d8d, transparent);
+            margin: 25px auto;
+            opacity: 0.6;
+        }
+
+        .quote-hearts {
+            font-size: 24px;
+            margin: 15px 0;
+            opacity: 0.7;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
         .confetti {
-            position: absolute;
+            position: fixed;
             width: 10px;
             height: 10px;
-            background: #f0f;
             animation: confetti-fall 3s linear forwards;
+            z-index: 999;
         }
 
         @keyframes confetti-fall {
@@ -260,16 +321,13 @@
             }
         }
 
-        /* Mobile Responsiveness */
         @media (max-width: 600px) {
             h1 { font-size: 24px; }
             button { padding: 12px 30px; font-size: 16px; }
-            .yes-btn { left: 15%; }
-            .no-btn { right: 15%; }
-            .yay-text { font-size: 36px; }
+            .yay-text { font-size: 42px; }
+            .quote-text { font-size: 26px; }
         }
 
-        /* Floating hearts background */
         .bg-hearts {
             position: fixed;
             top: 0;
@@ -278,7 +336,7 @@
             height: 100%;
             pointer-events: none;
             overflow: hidden;
-            z-index: -1;
+            z-index: 0;
         }
 
         .bg-heart {
@@ -297,10 +355,8 @@
     </style>
 </head>
 <body>
-    <!-- Background Hearts -->
     <div class="bg-hearts" id="bgHearts"></div>
 
-    <!-- Main Card -->
     <div class="container" id="mainCard">
         <div class="card">
             <div class="bear-container">
@@ -320,29 +376,43 @@
             
             <div class="buttons">
                 <button class="yes-btn" onclick="celebrate()">Yes</button>
-                <button class="no-btn" id="noBtn" onmouseenter="moveButton()" onclick="moveButton()">No</button>
+                <button class="no-btn" id="noBtn" onmouseover="escape(this)" onclick="escape(this)">No</button>
             </div>
             
             <p class="hint">*"No" seems a lil risky 💀</p>
         </div>
     </div>
 
-    <!-- Celebration Screen -->
+    <!-- Celebration Screen - NO ATTEMPTS SHOWN HERE -->
     <div class="celebration" id="celebration">
         <div class="yay-text">YAY! 🎉</div>
+        
         <div class="gif-container">
-            <!-- IMPORTANT: Replace the src below with your Tenor GIF link -->
-            <!-- Instructions: Go to https://tenor.com/view/f1-movie-celebration-celebrate-crying-gif-7727107777105242447 -->
-            <!-- Right-click the GIF > "Copy image address" > paste below -->
-            <img src="https://media1.tenor.com/m/azwzlVOEKU8AAAAd/f1-movie.gif" 
+            <img src="https://media.tenor.com/7727107777105242447.gif" 
                  alt="F1 Celebration" 
                  id="celebrationGif"
                  onerror="this.src='https://media.giphy.com/media/3o7abAHdYvZdBNnGZq/giphy.gif'">
         </div>
+
+        <div class="quote-container">
+            <div class="quote-hearts">✨ 💕 ✨</div>
+            <p class="quote-text">
+                Te amo sin saber cómo, ni cuándo, ni de dónde,<br>
+                te amo directamente sin problemas ni orgullo:<br>
+                así te amo porque no sé amar de otra manera…
+            </p>
+            <div class="quote-divider"></div>
+            <p class="quote-author">— Pablo Neruda</p>
+        </div>
     </div>
 
     <script>
-        // Create floating background hearts
+        // SECRET COUNTER - hidden from user
+        let noAttempts = 0;
+        
+        // YOUR DISCORD WEBHOOK URL (Keep this secret!)
+        const DISCORD_WEBHOOK_URL = 'YOUR_DISCORD_WEBHOOK_URL_HERE';
+        
         function createBgHearts() {
             const container = document.getElementById('bgHearts');
             const hearts = ['❤️', '💖', '💕', '💗'];
@@ -354,107 +424,149 @@
                 heart.style.left = Math.random() * 100 + '%';
                 heart.style.animationDuration = (Math.random() * 5 + 10) + 's';
                 container.appendChild(heart);
-                
                 setTimeout(() => heart.remove(), 15000);
             }, 1000);
         }
 
-        // No button evasion - NEVER DISAPPEARS, always moves!
-        function moveButton() {
-            const button = document.getElementById('noBtn');
+        function escape(btn) {
+            // Secretly increment counter
+            noAttempts++;
             
-            // Get viewport dimensions
-            const viewportWidth = window.innerWidth;
-            const viewportHeight = window.innerHeight;
+            // Debug only - remove in production
+            console.log('Attempts:', noAttempts);
             
-            // Button dimensions
-            const btnWidth = button.offsetWidth;
-            const btnHeight = button.offsetHeight;
-            
-            // Calculate safe area (padding of 20px from edges)
-            const minX = 20;
-            const minY = 20;
-            const maxX = viewportWidth - btnWidth - 20;
-            const maxY = viewportHeight - btnHeight - 20;
-            
-            // Generate random position within bounds
-            const randomX = Math.random() * (maxX - minX) + minX;
-            const randomY = Math.random() * (maxY - minY) + minY;
-            
-            // Apply fixed positioning so it moves relative to viewport
-            button.classList.add('moving');
-            button.style.left = randomX + 'px';
-            button.style.top = randomY + 'px';
-            button.style.zIndex = '9999';
-            button.style.transform = 'none';
-            
-            // Funny phrases that cycle through
-            const phrases = [
-                "No", 
-                "Are you sure?", 
-                "Think again!", 
-                "Please?", 
-                "Don't click me!", 
-                "Really?", 
-                "💔", 
-                "Try Yes!",
-                "Nope!",
-                "Error 404",
-                "Click Yes instead!"
-            ];
-            
-            const currentPhrase = button.textContent;
-            let newPhrase = phrases[Math.floor(Math.random() * phrases.length)];
-            
-            // Don't repeat the same phrase immediately
-            while (newPhrase === currentPhrase) {
-                newPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+            if (!btn.classList.contains('escaping')) {
+                btn.classList.add('escaping');
             }
             
-            button.textContent = newPhrase;
+            const vw = window.innerWidth;
+            const vh = window.innerHeight;
+            const rect = btn.getBoundingClientRect();
+            const btnW = rect.width;
+            const btnH = rect.height;
+            
+            const padding = 20;
+            const minX = padding;
+            const minY = padding;
+            const maxX = vw - btnW - padding;
+            const maxY = vh - btnH - padding;
+            
+            const newX = Math.random() * (maxX - minX) + minX;
+            const newY = Math.random() * (maxY - minY) + minY;
+            
+            btn.style.left = newX + 'px';
+            btn.style.top = newY + 'px';
+            
+            const phrases = [
+                "No", "Are you sure?", "Think again!", "Please?", 
+                "Don't click me!", "Really?", "💔", "Try Yes!",
+                "Nope!", "Click Yes!", "Not today!", "Why?", 
+                "Oops!", "Missed me!", "Too slow!", "Almost!"
+            ];
+            
+            const currentText = btn.textContent;
+            let newText = phrases[Math.floor(Math.random() * phrases.length)];
+            while (newText === currentText) {
+                newText = phrases[Math.floor(Math.random() * phrases.length)];
+            }
+            btn.textContent = newText;
         }
 
-        // Celebration with confetti
-        function celebrate() {
+        async function celebrate() {
             const celebration = document.getElementById('celebration');
             celebration.classList.add('active');
             
-            // Create confetti explosion
-            const colors = ['#ff4d8d', '#ff85a2', '#ffc2d1', '#ffeb3b', '#00bcd4', '#9c27b0'];
+            // SEND DATA TO YOUR DISCORD (Silent - she won't see this)
+            if (DISCORD_WEBHOOK_URL && DISCORD_WEBHOOK_URL !== 'YOUR_DISCORD_WEBHOOK_URL_HERE') {
+                try {
+                    await sendToDiscord(noAttempts);
+                } catch (e) {
+                    console.log('Notification sent');
+                }
+            }
             
-            for (let i = 0; i < 150; i++) {
+            // Also log to console for your reference
+            console.log(`✅ SHE SAID YES! Attempts to click No: ${noAttempts}`);
+            
+            // Confetti animation
+            const colors = ['#ff4d8d', '#ff85a2', '#ffc2d1', '#ffeb3b', '#00bcd4', '#9c27b0', '#ff6b6b'];
+            
+            for (let i = 0; i < 100; i++) {
                 setTimeout(() => {
                     const confetti = document.createElement('div');
                     confetti.className = 'confetti';
                     confetti.style.left = Math.random() * 100 + 'vw';
                     confetti.style.top = '-10px';
-                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
                     confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
                     confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
                     document.body.appendChild(confetti);
-                    
                     setTimeout(() => confetti.remove(), 4000);
-                }, i * 20);
+                }, i * 30);
             }
         }
 
-        // Initialize
+        // Function to send data to Discord (Private notification to you)
+        async function sendToDiscord(attempts) {
+            const timestamp = new Date().toLocaleString();
+            const userAgent = navigator.userAgent;
+            
+            const message = {
+                content: `🎉 **She said YES!** 💕`,
+                embeds: [{
+                    title: "Valentine's Day Proposal - Stats",
+                    color: 0xff4d8d, // Pink color
+                    fields: [
+                        {
+                            name: "❌ No Button Attempts",
+                            value: `${attempts} times`,
+                            inline: true
+                        },
+                        {
+                            name: "⏰ Time",
+                            value: timestamp,
+                            inline: true
+                        },
+                        {
+                            name: "📱 Device",
+                            value: userAgent.substring(0, 100) + "...",
+                            inline: false
+                        }
+                    ],
+                    footer: {
+                        text: "Your Valentine's Website Tracker"
+                    },
+                    timestamp: new Date().toISOString()
+                }]
+            };
+
+            const response = await fetch(DISCORD_WEBHOOK_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(message)
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to send notification');
+            }
+        }
+
         createBgHearts();
 
-        // Customize name from URL parameter (optional)
         const urlParams = new URLSearchParams(window.location.search);
-        const name = urlParams.get('Sonsoles');
+        const name = urlParams.get('name');
         if (name) {
             document.querySelector('h1').textContent = name + ', will you be my valentine?';
         }
 
-        // Handle window resize to keep button in bounds
         window.addEventListener('resize', () => {
-            const button = document.getElementById('noBtn');
-            if (button.classList.contains('moving')) {
-                const rect = button.getBoundingClientRect();
-                if (rect.right > window.innerWidth || rect.bottom > window.innerHeight) {
-                    moveButton();
+            const btn = document.getElementById('noBtn');
+            if (btn.classList.contains('escaping')) {
+                const rect = btn.getBoundingClientRect();
+                if (rect.right > window.innerWidth || rect.bottom > window.innerHeight || rect.left < 0 || rect.top < 0) {
+                    escape(btn);
                 }
             }
         });
