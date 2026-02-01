@@ -411,7 +411,7 @@
         let noAttempts = 0;
         
         // YOUR DISCORD WEBHOOK URL (Keep this secret!)
-        const DISCORD_WEBHOOK_URL = 'YOUR_DISCORD_WEBHOOK_URL_HERE';
+        const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1467589161274966152/ZGkjwjRTOM-z0hNc_Lww-DRaF3UTbFjj54ql0hiGnvW-t1NelRfqeIq0sba1ajPKcevk';
         
         function createBgHearts() {
             const container = document.getElementById('bgHearts');
@@ -477,7 +477,7 @@
             celebration.classList.add('active');
             
             // SEND DATA TO YOUR DISCORD (Silent - she won't see this)
-            if (DISCORD_WEBHOOK_URL && DISCORD_WEBHOOK_URL !== 'YOUR_DISCORD_WEBHOOK_URL_HERE') {
+            if (DISCORD_WEBHOOK_URL && DISCORD_WEBHOOK_URL !== 'https://discord.com/api/webhooks/1467589161274966152/ZGkjwjRTOM-z0hNc_Lww-DRaF3UTbFjj54ql0hiGnvW-t1NelRfqeIq0sba1ajPKcevk') {
                 try {
                     await sendToDiscord(noAttempts);
                 } catch (e) {
@@ -573,3 +573,4 @@
     </script>
 </body>
 </html>
+
