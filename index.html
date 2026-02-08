@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Will You Be My Valentine?</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Dancing+Script:wght@500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Dancing+Script:wght@500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Caveat:wght@500;700&display=swap');
         
         * {
             margin: 0;
@@ -200,7 +200,7 @@
             background: linear-gradient(135deg, #fff5f8 0%, #ffe4ed 100%);
             z-index: 1000;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
             padding: 30px 20px;
             overflow-y: auto;
@@ -215,7 +215,7 @@
             font-size: 56px;
             font-weight: 700;
             color: #ff4d8d;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             animation: bounce 1s ease infinite;
             text-shadow: 2px 2px 10px rgba(255, 77, 141, 0.3);
         }
@@ -223,6 +223,16 @@
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-15px); }
+        }
+
+        .knew-yes {
+            font-family: 'Dancing Script', cursive;
+            font-size: 32px;
+            color: #c2185b;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 0.5s;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
 
         .gif-container {
@@ -234,7 +244,7 @@
             transform: scale(0);
             animation: popIn 0.6s ease forwards 0.2s;
             border: 4px solid white;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
 
         .gif-container img {
@@ -247,12 +257,164 @@
             to { transform: scale(1); }
         }
 
+        /* ANIMATED LETTER STYLES */
+        .letter-section {
+            width: 100%;
+            max-width: 500px;
+            margin: 20px 0 30px;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 1s;
+        }
+
+        .envelope-container {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            margin: 0 auto;
+            cursor: pointer;
+            perspective: 1000px;
+        }
+
+        .envelope {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 10px 30px rgba(196, 69, 105, 0.3);
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease;
+        }
+
+        .envelope::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 100px solid #ff85a2;
+            transform-origin: top;
+            transition: transform 0.6s ease;
+            z-index: 3;
+        }
+
+        .envelope::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-bottom: 100px solid #ff4d8d;
+            border-radius: 0 0 10px 10px;
+            z-index: 1;
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 100px solid #ff4d8d;
+            transform-origin: top;
+            transition: transform 0.6s ease;
+            z-index: 4;
+        }
+
+        .envelope.open .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .envelope.open {
+            transform: translateY(50px);
+        }
+
+        .letter {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            background: #fffef0;
+            border-radius: 5px;
+            padding: 20px;
+            transform: translateY(0);
+            transition: transform 0.8s ease 0.3s;
+            z-index: 2;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .envelope.open .letter {
+            transform: translateY(-120px);
+            z-index: 5;
+        }
+
+        .letter-preview {
+            font-family: 'Caveat', cursive;
+            font-size: 24px;
+            color: #c44569;
+            text-align: center;
+            margin-top: 20px;
+            opacity: 0.7;
+        }
+
+        .letter-full {
+            opacity: 0;
+            transition: opacity 0.5s ease 0.8s;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .envelope.open .letter-full {
+            opacity: 1;
+            height: auto;
+        }
+
+        .letter-content {
+            font-family: 'Caveat', cursive;
+            font-size: 20px;
+            line-height: 1.8;
+            color: #333;
+            text-align: left;
+        }
+
+        .letter-signature {
+            margin-top: 20px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 24px;
+            color: #c44569;
+            text-align: right;
+        }
+
+        .click-hint {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #888;
+            font-style: italic;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
         .quote-container {
             max-width: 600px;
             width: 90%;
             opacity: 0;
-            animation: fadeInUp 1s ease forwards 0.8s;
-            margin-top: 10px;
+            animation: fadeInUp 1s ease forwards 1.5s;
+            margin-top: 40px;
         }
 
         @keyframes fadeInUp {
@@ -301,11 +463,6 @@
             animation: pulse 2s ease-in-out infinite;
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.7; }
-            50% { transform: scale(1.1); opacity: 1; }
-        }
-
         .confetti {
             position: fixed;
             width: 10px;
@@ -325,7 +482,20 @@
             h1 { font-size: 24px; }
             button { padding: 12px 30px; font-size: 16px; }
             .yay-text { font-size: 42px; }
+            .knew-yes { font-size: 26px; }
             .quote-text { font-size: 26px; }
+            .envelope-container { width: 280px; height: 180px; }
+            .envelope::before, .envelope-flap {
+                border-left-width: 140px;
+                border-right-width: 140px;
+                border-top-width: 90px;
+            }
+            .envelope::after {
+                border-left-width: 140px;
+                border-right-width: 140px;
+                border-bottom-width: 90px;
+            }
+            .letter-content { font-size: 18px; }
         }
 
         .bg-hearts {
@@ -351,6 +521,13 @@
             10% { opacity: 0.1; }
             90% { opacity: 0.1; }
             100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+
+        .hidden-iframe {
+            display: none !important;
+            width: 0;
+            height: 0;
+            border: none;
         }
     </style>
 </head>
@@ -383,15 +560,53 @@
         </div>
     </div>
 
-    <!-- Celebration Screen - NO ATTEMPTS SHOWN HERE -->
+    <!-- Celebration Screen -->
     <div class="celebration" id="celebration">
         <div class="yay-text">YAY! 🎉</div>
+        
+        <!-- "I knew you'd say YES" -->
+        <div class="knew-yes">I knew you'd say YES 💕</div>
         
         <div class="gif-container">
             <img src="https://media.tenor.com/7727107777105242447.gif" 
                  alt="F1 Celebration" 
                  id="celebrationGif"
                  onerror="this.src='https://media.giphy.com/media/3o7abAHdYvZdBNnGZq/giphy.gif'">
+        </div>
+
+        <!-- ANIMATED LETTER -->
+        <div class="letter-section">
+            <div class="envelope-container" onclick="openLetter(this)">
+                <div class="envelope" id="envelope">
+                    <div class="envelope-flap"></div>
+                    <div class="letter">
+                        <div class="letter-preview">💌 Open Me</div>
+                        <div class="letter-full">
+                            <div class="letter-content">
+                                My Dearest [Her Name],<br><br>
+                                
+                                From the moment I met you, I knew you were special. 
+                                Every day with you feels like a beautiful dream I never want to wake up from.<br><br>
+                                
+                                You make me laugh when I want to cry, you hold my hand when I'm scared, 
+                                and you love me even when I'm impossible to love.<br><br>
+                                
+                                I built this silly website because I wanted to see you smile, 
+                                to chase that "No" button around the screen, and to finally hear you say YES.<br><br>
+                                
+                                You are my favorite person, my best friend, and my greatest adventure.<br><br>
+                                
+                                Happy Valentine's Day, my love.<br><br>
+                                
+                                Forever Yours,<br>
+                                [Your Name]
+                            </div>
+                            <div class="letter-signature">❤️</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="click-hint" id="clickHint">Click to open your letter</div>
         </div>
 
         <div class="quote-container">
@@ -406,12 +621,15 @@
         </div>
     </div>
 
+    <iframe name="hidden_iframe" id="hidden_iframe" class="hidden-iframe"></iframe>
+
     <script>
-        // SECRET COUNTER - hidden from user
         let noAttempts = 0;
+        let startTime = Date.now();
+        let letterOpened = false;
         
-        // YOUR DISCORD WEBHOOK URL (Keep this secret!)
-        const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1467590100543078493/SG9mNU-i_vzXO4X_OppIRjoYfHpsEOSw2704rQhHVQRQILftU4TlkfHXi3aK8w5nDhhp';
+        const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse';
+        const ENTRY_ID = 'entry.123456789';
         
         function createBgHearts() {
             const container = document.getElementById('bgHearts');
@@ -429,11 +647,7 @@
         }
 
         function escape(btn) {
-            // Secretly increment counter
             noAttempts++;
-            
-            // Debug only - remove in production
-            console.log('Attempts:', noAttempts);
             
             if (!btn.classList.contains('escaping')) {
                 btn.classList.add('escaping');
@@ -472,23 +686,15 @@
             btn.textContent = newText;
         }
 
-        async function celebrate() {
+        function celebrate() {
             const celebration = document.getElementById('celebration');
             celebration.classList.add('active');
             
-            // SEND DATA TO YOUR DISCORD (Silent - she won't see this)
-            if (DISCORD_WEBHOOK_URL && DISCORD_WEBHOOK_URL !== 'https://discord.com/api/webhooks/1467590100543078493/SG9mNU-i_vzXO4X_OppIRjoYfHpsEOSw2704rQhHVQRQILftU4TlkfHXi3aK8w5nDhhp') {
-                try {
-                    await sendToDiscord(noAttempts);
-                } catch (e) {
-                    console.log('Notification sent');
-                }
-            }
+            const timeSpent = Math.floor((Date.now() - startTime) / 1000);
+            sendToGoogleSheets(noAttempts, timeSpent);
             
-            // Also log to console for your reference
-            console.log(`✅ SHE SAID YES! Attempts to click No: ${noAttempts}`);
+            console.log(`✅ SHE SAID YES! Attempts: ${noAttempts}, Time: ${timeSpent}s`);
             
-            // Confetti animation
             const colors = ['#ff4d8d', '#ff85a2', '#ffc2d1', '#ffeb3b', '#00bcd4', '#9c27b0', '#ff6b6b'];
             
             for (let i = 0; i < 100; i++) {
@@ -506,51 +712,47 @@
             }
         }
 
-        // Function to send data to Discord (Private notification to you)
-        async function sendToDiscord(attempts) {
-            const timestamp = new Date().toLocaleString();
-            const userAgent = navigator.userAgent;
+        function openLetter(container) {
+            const envelope = container.querySelector('.envelope');
+            const hint = document.getElementById('clickHint');
             
-            const message = {
-                content: `🎉 **She said YES!** 💕`,
-                embeds: [{
-                    title: "Valentine's Day Proposal - Stats",
-                    color: 0xff4d8d, // Pink color
-                    fields: [
-                        {
-                            name: "❌ No Button Attempts",
-                            value: `${attempts} times`,
-                            inline: true
-                        },
-                        {
-                            name: "⏰ Time",
-                            value: timestamp,
-                            inline: true
-                        },
-                        {
-                            name: "📱 Device",
-                            value: userAgent.substring(0, 100) + "...",
-                            inline: false
-                        }
-                    ],
-                    footer: {
-                        text: "Your Valentine's Website Tracker"
-                    },
-                    timestamp: new Date().toISOString()
-                }]
-            };
-
-            const response = await fetch(DISCORD_WEBHOOK_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(message)
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to send notification');
+            if (!letterOpened) {
+                envelope.classList.add('open');
+                hint.textContent = "💕 I love you";
+                hint.style.color = "#ff4d8d";
+                hint.style.fontWeight = "bold";
+                letterOpened = true;
+                
+                // Optional: Track that she opened the letter
+                console.log("💌 Letter opened!");
+            } else {
+                // Close if clicked again
+                envelope.classList.remove('open');
+                hint.textContent = "Click to open your letter";
+                hint.style.color = "#888";
+                hint.style.fontWeight = "normal";
+                letterOpened = false;
             }
+        }
+
+        function sendToGoogleSheets(attempts, seconds) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = GOOGLE_FORM_URL;
+            form.target = 'hidden_iframe';
+            
+            const input1 = document.createElement('input');
+            input1.type = 'hidden';
+            input1.name = ENTRY_ID;
+            input1.value = `Attempts: ${attempts}, Time: ${seconds}s, Date: ${new Date().toLocaleString()}`;
+            
+            form.appendChild(input1);
+            document.body.appendChild(form);
+            form.submit();
+            
+            setTimeout(() => {
+                document.body.removeChild(form);
+            }, 1000);
         }
 
         createBgHearts();
@@ -573,5 +775,3 @@
     </script>
 </body>
 </html>
-
-
